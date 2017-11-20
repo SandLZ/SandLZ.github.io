@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="sand" />
+
+
+
+<meta name="description" content="RxJava 简介什么是RxJava?RxJava 是一个响应式编程框架，由 Netflix 开发的响应式扩展（Reactive Extensions）的Java实现,是一个在 Java VM 上使用可观测的序列来组成异步的、基于事件的程序的库. 能为开发者带来(做)什么？特点  简洁、简洁、简洁  随着业务逻辑的复杂，代码的可读性逐渐降低，RxJava相比较于AsyncTask、Handler等">
+<meta name="keywords" content="Android,RxJava">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RxJava学习笔记(一) - 基础篇">
+<meta property="og:url" content="http://sandlz.me/2016/08/18/RxJava学习笔记(一)-基础/index.html">
+<meta property="og:site_name" content="Blog">
+<meta property="og:description" content="RxJava 简介什么是RxJava?RxJava 是一个响应式编程框架，由 Netflix 开发的响应式扩展（Reactive Extensions）的Java实现,是一个在 Java VM 上使用可观测的序列来组成异步的、基于事件的程序的库. 能为开发者带来(做)什么？特点  简洁、简洁、简洁  随着业务逻辑的复杂，代码的可读性逐渐降低，RxJava相比较于AsyncTask、Handler等">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-03-25T10:09:42.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="RxJava学习笔记(一) - 基础篇">
+<meta name="twitter:description" content="RxJava 简介什么是RxJava?RxJava 是一个响应式编程框架，由 Netflix 开发的响应式扩展（Reactive Extensions）的Java实现,是一个在 Java VM 上使用可观测的序列来组成异步的、基于事件的程序的库. 能为开发者带来(做)什么？特点  简洁、简洁、简洁  随着业务逻辑的复杂，代码的可读性逐渐降低，RxJava相比较于AsyncTask、Handler等">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="Blog" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>RxJava学习笔记(一) - 基础篇 | Blog</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: false,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script>
+        yiliaConfig.jquery_ui = [true, "//cdn.bootcss.com/jqueryui/1.10.4/jquery-ui.min.js", "//cdn.bootcss.com/jqueryui/1.10.4/css/jquery-ui.min.css"];
+    </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">sand</a></h1>
+        </hgroup>
+
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="true" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>Menu</li>
+                        <li>Tags</li>
+                        
+                        <li>Friends</li>
+                        
+                        
+                        <li>About Me</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/music/">音乐</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:978949438@qq.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="https://github.com/SandLZ" title="GitHub"></a>
+                            
+                                <a class="fa 简书" href="http://www.jianshu.com/users/3034107bd129/timeline" title="简书"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-Studio/">Android Studio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJs/">AngularJs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Chart/">Chart</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cordova/">Cordova</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DB/">DB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dagger2/">Dagger2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Error/">Error</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Exception/">Exception</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FrameWork/">FrameWork</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gradle/">Gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hybrid-App/">Hybrid App</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IM/">IM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ionic/">Ionic</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MVP/">MVP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ORM/">ORM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Plugin/">Plugin</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RecyclerView/">RecyclerView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Retrofit/">Retrofit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RxJava/">RxJava</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebApp/">WebApp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/framework/">framework</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/framwork/">framwork</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ios/">ios</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ui-router/">ui-router</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/命令/">命令</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/学习资料/">学习资料</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/常见问题/">常见问题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/开源项目汇总/">开源项目汇总</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/恢复/">恢复</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/技巧/">技巧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/插件/">插件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/设计模式/">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/香蕉派/">香蕉派</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="/devlu007.me">devlu</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">专注移动开发</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">sand</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">sand</a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/music/">音乐</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:978949438@qq.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/SandLZ" title="GitHub"></a>
+                            
+                                <a class="fa 简书" target="_blank" href="http://www.jianshu.com/users/3034107bd129/timeline" title="简书"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
+</nav>
+      <div class="body-wrap"><article id="post-RxJava学习笔记(一)-基础" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/08/18/RxJava学习笔记(一)-基础/" class="article-date">
+      <time datetime="2016-08-18T07:47:50.000Z" itemprop="datePublished">2016-08-18</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      RxJava学习笔记(一) - 基础篇
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/IT/">IT</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RxJava/">RxJava</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h2 id="RxJava-简介"><a href="#RxJava-简介" class="headerlink" title="RxJava 简介"></a>RxJava 简介</h2><h3 id="什么是RxJava"><a href="#什么是RxJava" class="headerlink" title="什么是RxJava?"></a>什么是RxJava?</h3><p>RxJava 是一个响应式编程框架，由 Netflix 开发的响应式扩展（Reactive Extensions）的Java实现,是一个在 Java VM 上使用可观测的序列来组成异步的、基于事件的程序的库.</p>
+<h3 id="能为开发者带来-做-什么？"><a href="#能为开发者带来-做-什么？" class="headerlink" title="能为开发者带来(做)什么？"></a>能为开发者带来(做)什么？</h3><p>特点</p>
+<ul>
+<li>简洁、简洁、简洁</li>
+</ul>
+<p>随着业务逻辑的复杂，代码的可读性逐渐降低，RxJava相比较于AsyncTask、Handler等让异步代码更为简洁.<br><a id="more"></a></p>
+<p>做什么？</p>
+<ul>
+<li>异步操作<ul>
+<li>网络访问(搭配Retrofit更佳)</li>
+<li>数据库的读写</li>
+<li>大图片的载入</li>
+<li>文件压缩/解压</li>
+</ul>
+</li>
+<li>绑定事件(需RxBinding)</li>
+<li>RxBus(事件总线)<ul>
+<li>代替<a href="http://blog.csdn.net/harvic880925/article/details/40660137" target="_blank" rel="external">EventBus</a></li>
+</ul>
+</li>
+</ul>
+<p>注：若是第一次使用RxJava或想使用RxJava，推荐阅读扔物线的<a href="http://gank.io/post/560e15be2dca930e00da1083" target="_blank" rel="external">给 Android 开发者的 RxJava 详解</a></p>
+<h2 id="引入到项目中"><a href="#引入到项目中" class="headerlink" title="引入到项目中"></a>引入到项目中</h2><p>首先，我们需要添加如下依赖：<br>rxandroid是针对Android平台的扩展<br><figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">compile</span> <span class="string">'io.reactivex:rxjava:1.1.8'</span></span><br><span class="line"><span class="keyword">compile</span> <span class="string">'io.reactivex:rxandroid:1.2.1'</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="如何使用？"><a href="#如何使用？" class="headerlink" title="如何使用？"></a>如何使用？</h2><p>RxJava 的观察者模式，包含四个基本概念：</p>
+<ul>
+<li>Observable(被观察者)</li>
+<li>Observer(观察者)</li>
+<li>subscribe(订阅)</li>
+<li>Event(事件)<br>简述：Observable发出事件，Observer处理事件，通过subscribe()实现两者的订阅。</li>
+</ul>
+<p>这些概念可能比较模式，不太容易理解，还是通过代码来解释吧~</p>
+<h2 id="编写Hello-world"><a href="#编写Hello-world" class="headerlink" title="编写Hello world"></a>编写Hello world</h2><blockquote><p>要求：在页面上显示Hello world</p>
+</blockquote>
+<p>此例仅用于说明其用法，在实际开发中并无实际意义.</p>
+<p>实现1：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 利用Observable 发出事件</span></span><br><span class="line">Observable&lt;List&lt;String&gt;&gt; observable = Observable.create(<span class="keyword">new</span> Observable.OnSubscribe&lt;List&lt;String&gt;&gt;() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">call</span><span class="params">(Subscriber&lt;? <span class="keyword">super</span> List&lt;String&gt;&gt; subscriber)</span> </span>&#123;</span><br><span class="line">            List&lt;String&gt; list = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; i++) &#123;</span><br><span class="line">                    list.add(<span class="string">"hello world "</span>+i);</span><br><span class="line">                &#125;</span><br><span class="line">                subscriber.onNext(list);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line"><span class="comment">// Observer 处理事件</span></span><br><span class="line">Observer&lt;List&lt;String&gt;&gt; observer= <span class="keyword">new</span> Observer&lt;List&lt;String&gt;&gt;() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCompleted</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onError</span><span class="params">(Throwable e)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onNext</span><span class="params">(List&lt;String&gt; strings)</span> </span>&#123;</span><br><span class="line">                mvpView.callBackGetDataResult(strings);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line"><span class="comment">// 或者使用Subscriber 处理事件</span></span><br><span class="line">Subscriber&lt;List&lt;String&gt;&gt; subscriber = <span class="keyword">new</span> Subscriber&lt;List&lt;String&gt;&gt;() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCompleted</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onError</span><span class="params">(Throwable e)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onNext</span><span class="params">(List&lt;String&gt; s)</span> </span>&#123;</span><br><span class="line">                mvpView.callBackGetDataResult(s);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line"><span class="comment">// 订阅</span></span><br><span class="line">observable.subscribe(observer);</span><br></pre></td></tr></table></figure></p>
+<blockquote><p>RxJava 还内置了一个实现了 Observer 的抽象类：Subscriber<br>Subscriber 对 Observer 接口进行了一些扩展，但他们的基本使用方式是完全一样的.<br>Observer 在subscribe()中最终会被转换成Subscriber对象，所以建议使用Subscriber对象.</p>
+</blockquote>
+<p>区别：Subscriber</p>
+<ul>
+<li>onStart()<br>  在 subscribe 刚开始，而事件还未发送之前被调用</li>
+<li>unsubscribe()<br>  用于取消订阅，防止内存泄漏</li>
+</ul>
+<p>解析：<br>当Observable被订阅时，Observable的call()方法会被调用，事件序列就会依次触发；subscriber.onNext(list)：被观察者调用了观察者的回调方法，实现了由被观察者向观察者的事件传递。<br>observable.subscribe(observer);返回Subscription 方便unsubscribe();</p>
+<p>上面的create()方法是 RxJava 最基本的创造事件序列的方法,基于这个，RxJava 还提供了一些快捷的创建事件的方法，如just(T),from(T[]) / from(Iterable&lt;? extends T&gt;),将传入的数组或 Iterable 拆分成具体对象后，依次发送出来.<br>下面就实现一下这种简便的方式</p>
+<p>实现2：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; list = <span class="keyword">new</span> ArrayList();</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; i++) &#123;</span><br><span class="line">    list.add(<span class="string">"hello world "</span>+i);</span><br><span class="line">    &#125;</span><br><span class="line">Observable.just(list)</span><br><span class="line">        .subscribeOn(Schedulers.computation())<span class="comment">// 计算线程</span></span><br><span class="line">        .observeOn(AndroidSchedulers.mainThread())<span class="comment">// 回调主线程</span></span><br><span class="line">        .subscribe(<span class="keyword">new</span> Action1&lt;List&lt;String&gt;&gt;() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">call</span><span class="params">(List&lt;String&gt; s)</span> </span>&#123;</span><br><span class="line">                mvpView.callBackGetDataResult(s);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br></pre></td></tr></table></figure>
+<p>解析：</p>
+<ol>
+<li>如 1-5 行代码所示，可以简便的发出事件.</li>
+<li>Action1<t>是什么？<br> RxJava 提供了多个ActionX的接口，用于包装不同的无返回值的方法.<br> subscribe时自动创建 Subscriber ，并使用 new 出来的Action1<t> 来定义 onNext()详情见下面的subscribe方法（官方）<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> Subscription <span class="title">subscribe</span><span class="params">(<span class="keyword">final</span> Action1&lt;? <span class="keyword">super</span> T&gt; onNext)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (onNext == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"onNext can not be null"</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        Action1&lt;Throwable&gt; onError = InternalObservableUtils.ERROR_NOT_IMPLEMENTED;</span><br><span class="line">        Action0 onCompleted = Actions.empty();</span><br><span class="line">        <span class="keyword">return</span> subscribe(<span class="keyword">new</span> ActionSubscriber&lt;T&gt;(onNext, onError, onCompleted));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</t></t></li>
+</ol>
+<p>此时，读者可能要问了 subscribeOn()、observeOn是什么鬼？<br>别急，下面一一解释.</p>
+<h2 id="线程调度器（Schedulers）"><a href="#线程调度器（Schedulers）" class="headerlink" title="线程调度器（Schedulers）"></a>线程调度器（Schedulers）</h2><blockquote><p>在不指定线程的情况下，RxJava 遵循的是线程不变的原则，即：在哪个线程调用 subscribe()，就在哪个线程生产事件；在哪个线程生产事件，就在哪个线程消费事件。如果需要切换线程，就需要用到 Scheduler（调度器）.</p>
+</blockquote>
+<p>内置的Schedulers：</p>
+<ul>
+<li>Schedulers.immediate():直接在当前线程运行（默认）</li>
+<li>Schedulers.newThread():新的线程</li>
+<li>Schedulers.io():I/O 操作（文件、数据库、网络请求等）</li>
+<li>Schedulers.computation():计算</li>
+</ul>
+<p>另外，Android本身提供一种：AndroidSchedulers.mainThread()</p>
+<p>上面使用的subscribeOn()、observeOn(）分别对应subscribe() 所发生的线程(事件产生的线程)、事件消费的线程.</p>
+<p>有了线程调度器，我们就无需写冗长的新建线程代码了~</p>
+<p>好了，到这里相信大家对Rxjava的使用和优势有了一定的认识，下面会继续学习其他的一些特性，更好的开发App…</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="http://gank.io/post/560e15be2dca930e00da1083" target="_blank" rel="external">给 Android 开发者的 RxJava 详解</a></p>
+<p><a href="http://blog.csdn.net/lzyzsd/article/details/41833541" target="_blank" rel="external">深入浅出RxJava</a></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>Title:</span><a href="/2016/08/18/RxJava学习笔记(一)-基础/">RxJava学习笔记(一) - 基础篇</a></p>
+        <p><span>Author:</span><a href="/" title="Back to Homepage">sand</a></p>
+        <p><span>Created:</span>2016-08-18, 15:47:50</p>
+        <p><span>Updated:</span>2017-03-25, 18:09:42</p>
+        <p>
+            <span>Full URL:</span><a class="post-url" href="/2016/08/18/RxJava学习笔记(一)-基础/" title="RxJava学习笔记(一) - 基础篇">http://sandlz.me/2016/08/18/RxJava学习笔记(一)-基础/</a>
+            <span class="copy-path" data-clipboard-text="From http://sandlz.me/2016/08/18/RxJava学习笔记(一)-基础/　　By sand" title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>License:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"CC BY-NC-SA 4.0"</a> Keep Link &amp; Author if Distribute.
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2016/09/27/Android 开发基础/">
+                    Android 开发基础
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2016/08/17/Android之MVP/">
+                    Android之MVP
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#RxJava-简介"><span class="toc-number">1.</span> <span class="toc-text">RxJava 简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#什么是RxJava"><span class="toc-number">1.1.</span> <span class="toc-text">什么是RxJava?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#能为开发者带来-做-什么？"><span class="toc-number">1.2.</span> <span class="toc-text">能为开发者带来(做)什么？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#引入到项目中"><span class="toc-number">2.</span> <span class="toc-text">引入到项目中</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#如何使用？"><span class="toc-number">3.</span> <span class="toc-text">如何使用？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#编写Hello-world"><span class="toc-number">4.</span> <span class="toc-text">编写Hello world</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#线程调度器（Schedulers）"><span class="toc-number">5.</span> <span class="toc-text">线程调度器（Schedulers）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考资料"><span class="toc-number">6.</span> <span class="toc-text">参考资料</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="Hide"  title="Show or Hide Table of Contents">
+
+    <script>
+        yiliaConfig.toc = ["Hide", "Show", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"RxJava学习笔记(一) - 基础篇　| Blog　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+        <section class="youyan" id="comments">
+    <script>
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = 'http://v2.uyan.cc/code/uyan.js?uid=2105147';
+            (d.head || d.body).appendChild(s);
+        }
+    </script>
+    
+    <script> loadComment(); </script>
+
+    <div id="uyan_frame"></div>
+</section>
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2016/09/27/Android 开发基础/" title="Pre: Android 开发基础">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="Mini Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2016/08/17/Android之MVP/" title="Next: Android之MVP">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/03/27/Ionic多视图/">Ionic多视图</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/08/MySQL恢复数据/">MySQL恢复数据</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/02/DBLite数据库/">DBLite数据库</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/22/RecyclerView实战/">RecyclerView实战</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/21/Android优秀开源项目及学习资料汇总/">Android优秀开源项目及学习资料汇总</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/19/Cordova-Plugin开发汇总/">Cordova-Plugin开发汇总</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/28/MVP + RxJava + Retrofit + Dagger2 FrameWork/">MVP + RxJava + Retrofit + Dagger2 FrameWork</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/27/Android 开发基础/">Android 开发基础</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/18/RxJava学习笔记(一)-基础/">RxJava学习笔记(一) - 基础篇</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/17/Android之MVP/">Android之MVP</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/15/Git命令/">Git命令</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/28/WebApp开发常见问题汇总/">WebApp开发常见问题汇总</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/26/Android 开发常见问题汇总/">Android 开发常见问题汇总</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/25/IonicFramework之Hybrid App开发/">IonicFramework 之 Hybrid App开发</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/17/AngularJs-Chart/">AngularJs-Chart的使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/01/Linux常用命令/">Linux常用命令</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/12/香蕉派折腾记/">香蕉派折腾记</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/30/ios-创建Framework/">Ios-创建Framework</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/10/03/Hexo常用命令/">Hexo常用命令</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2015-2017 sand
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="A fast, simple &amp; powerful blog framework">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="Another simple and elegant theme for Hexo  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="Site Visitors"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="Page Hits"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 1;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="Back to Top"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="Comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="Go to Bottom"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

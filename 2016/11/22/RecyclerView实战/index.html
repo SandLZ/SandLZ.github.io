@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="sand" />
+
+
+
+<meta name="description" content="BaseRecyclerViewAdapterHelper是一个很强的RecyclerView适配器，针对以往大量的adapter代码做了大量优化. 收集部分优秀的RecyclerViewAdapter文章：  腾讯Bugly ListView 与 RecyclerView 对比浅析 BRVAH RecyclerView优秀文集">
+<meta name="keywords" content="Android,RecyclerView,IM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RecyclerView实战">
+<meta property="og:url" content="http://sandlz.me/2016/11/22/RecyclerView实战/index.html">
+<meta property="og:site_name" content="Blog">
+<meta property="og:description" content="BaseRecyclerViewAdapterHelper是一个很强的RecyclerView适配器，针对以往大量的adapter代码做了大量优化. 收集部分优秀的RecyclerViewAdapter文章：  腾讯Bugly ListView 与 RecyclerView 对比浅析 BRVAH RecyclerView优秀文集">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://7xsap2.com1.z0.glb.clouddn.com/chat.gif">
+<meta property="og:image" content="http://7xsap2.com1.z0.glb.clouddn.com/pull_refresh.gif">
+<meta property="og:image" content="http://7xsap2.com1.z0.glb.clouddn.com/highLight.gif">
+<meta property="og:updated_time" content="2017-03-25T10:09:05.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="RecyclerView实战">
+<meta name="twitter:description" content="BaseRecyclerViewAdapterHelper是一个很强的RecyclerView适配器，针对以往大量的adapter代码做了大量优化. 收集部分优秀的RecyclerViewAdapter文章：  腾讯Bugly ListView 与 RecyclerView 对比浅析 BRVAH RecyclerView优秀文集">
+<meta name="twitter:image" content="http://7xsap2.com1.z0.glb.clouddn.com/chat.gif">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="Blog" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>RecyclerView实战 | Blog</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: false,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script>
+        yiliaConfig.jquery_ui = [true, "//cdn.bootcss.com/jqueryui/1.10.4/jquery-ui.min.js", "//cdn.bootcss.com/jqueryui/1.10.4/css/jquery-ui.min.css"];
+    </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">sand</a></h1>
+        </hgroup>
+
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="true" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>Menu</li>
+                        <li>Tags</li>
+                        
+                        <li>Friends</li>
+                        
+                        
+                        <li>About Me</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/music/">音乐</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:978949438@qq.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="https://github.com/SandLZ" title="GitHub"></a>
+                            
+                                <a class="fa 简书" href="http://www.jianshu.com/users/3034107bd129/timeline" title="简书"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-Studio/">Android Studio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJs/">AngularJs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Chart/">Chart</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cordova/">Cordova</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DB/">DB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dagger2/">Dagger2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Error/">Error</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Exception/">Exception</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FrameWork/">FrameWork</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gradle/">Gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hybrid-App/">Hybrid App</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IM/">IM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ionic/">Ionic</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MVP/">MVP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ORM/">ORM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Plugin/">Plugin</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RecyclerView/">RecyclerView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Retrofit/">Retrofit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RxJava/">RxJava</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebApp/">WebApp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/framework/">framework</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/framwork/">framwork</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ios/">ios</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ui-router/">ui-router</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/命令/">命令</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/学习资料/">学习资料</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/常见问题/">常见问题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/开源项目汇总/">开源项目汇总</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/恢复/">恢复</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/技巧/">技巧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/插件/">插件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/设计模式/">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/香蕉派/">香蕉派</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="/devlu007.me">devlu</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">专注移动开发</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">sand</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">sand</a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/music/">音乐</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:978949438@qq.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/SandLZ" title="GitHub"></a>
+                            
+                                <a class="fa 简书" target="_blank" href="http://www.jianshu.com/users/3034107bd129/timeline" title="简书"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
+</nav>
+      <div class="body-wrap"><article id="post-RecyclerView实战" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/11/22/RecyclerView实战/" class="article-date">
+      <time datetime="2016-11-22T14:45:11.000Z" itemprop="datePublished">2016-11-22</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      RecyclerView实战
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/IT/">IT</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IM/">IM</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RecyclerView/">RecyclerView</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p><a href="https://github.com/CymChad/BaseRecyclerViewAdapterHelper" target="_blank" rel="external">BaseRecyclerViewAdapterHelper</a>是一个很强的RecyclerView适配器，针对以往大量的adapter代码做了大量优化.</p>
+<p>收集部分优秀的RecyclerViewAdapter文章：</p>
+<ul>
+<li>腾讯Bugly <a href="http://mp.weixin.qq.com/s?__biz=MzA3NTYzODYzMg==&amp;mid=2653578065&amp;idx=2&amp;sn=25e64a8bb7b5934cf0ce2e49549a80d6&amp;chksm=84b3b156b3c43840061c28869671da915a25cf3be54891f040a3532e1bb17f9d32e244b79e3f&amp;scene=4#wechat_redirect" target="_blank" rel="external">ListView 与 RecyclerView 对比浅析</a></li>
+<li>BRVAH <a href="https://github.com/CymChad/CymChad.github.io" target="_blank" rel="external">RecyclerView优秀文集</a></li>
+</ul>
+<a id="more"></a>
+<h2 id="为什么使用RecyclerView"><a href="#为什么使用RecyclerView" class="headerlink" title="为什么使用RecyclerView?"></a>为什么使用RecyclerView?</h2><ul>
+<li>支持多种布局</li>
+<li>复杂数据、快速滑动</li>
+<li>API友好</li>
+</ul>
+<h2 id="为什么使用它？"><a href="#为什么使用它？" class="headerlink" title="为什么使用它？"></a>为什么使用它？</h2><ul>
+<li>优化Adapter代码（减少百分之70%代码）</li>
+<li>添加点击item点击、长按事件、以及item子控件的点击事件</li>
+<li>添加加载动画（一行代码轻松切换5种默认动画）</li>
+<li>添加头部、尾部、下拉刷新、上拉加载（感觉又回到ListView时代）</li>
+<li>设置自定义的加载更多布局</li>
+<li>添加分组（随心定义分组头部）</li>
+<li>自定义不同的item类型（简单配置、无需重写额外方法）</li>
+<li>设置空布局（比Listview的setEmptyView还要好用！）</li>
+<li>添加拖拽item</li>
+</ul>
+<p>(以上摘自BaseRecyclerViewAdapterHelper)</p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><h3 id="添加到工程"><a href="#添加到工程" class="headerlink" title="添加到工程"></a>添加到工程</h3><p>项目根目录build.gradle </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">allprojects &#123;</span><br><span class="line">    repositories &#123;</span><br><span class="line">        jcenter()</span><br><span class="line">        maven &#123; url &quot;https://jitpack.io&quot; &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>app目录下build.gradle</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">    compile &apos;com.github.CymChad:BaseRecyclerViewAdapterHelper:v2.6.1&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><p>项目地址：<a href="https://github.com/SandLZ/ChatUIDemo" target="_blank" rel="external">ChatUIDemo</a></p>
+<p>下面展示一些示例：</p>
+<ul>
+<li>多布局聊天页</li>
+<li>搜索高亮</li>
+<li>下拉刷新、上拉加载更多 </li>
+</ul>
+<div align="center"><br><img src="http://7xsap2.com1.z0.glb.clouddn.com/chat.gif" width="399" height="633" alt="图片名称" align="left"><br><img src="http://7xsap2.com1.z0.glb.clouddn.com/pull_refresh.gif" width="633" height="399" alt="图片名称" align="center"><br><img src="http://7xsap2.com1.z0.glb.clouddn.com/highLight.gif" width="399" height="633" alt="图片名称" align="right"><br></div>
+
+
+<h3 id="示例-聊天页"><a href="#示例-聊天页" class="headerlink" title="示例-聊天页"></a>示例-聊天页</h3><h4 id="添加依赖"><a href="#添加依赖" class="headerlink" title="添加依赖"></a>添加依赖</h4><ul>
+<li>appcompat-v7</li>
+<li>recyclerview</li>
+<li>xutils 工具合集</li>
+<li>BaseRecyclerViewAdapterHelper 适配器</li>
+<li>glide 图片框架</li>
+<li>glide-transformations 变换</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">compile &apos;com.android.support:appcompat-v7:23.3.0&apos;</span><br><span class="line">compile &apos;com.android.support:recyclerview-v7:23.3.0&apos;</span><br><span class="line">compile &apos;org.xutils:xutils:3.3.38&apos;</span><br><span class="line">compile &apos;com.github.CymChad:BaseRecyclerViewAdapterHelper:2.6.1&apos;</span><br><span class="line">compile &apos;com.github.bumptech.glide:glide:3.7.0&apos;</span><br><span class="line">compile &apos;jp.wasabeef:glide-transformations:2.0.1&apos;</span><br></pre></td></tr></table></figure>
+<h4 id="新建items"><a href="#新建items" class="headerlink" title="新建items"></a>新建items</h4><p>定义消息的类型，包含哪些内容(页面所需数据)</p>
+<p>ChatMutiItems 继承自 MultiItemEntity<br>并实现 getItemType() 方法.</p>
+<p>代码片段：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> TEXT = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> TEXT_O = <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> IMAGE = <span class="number">3</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> IMAGE_O = <span class="number">4</span>;</span><br><span class="line">    <span class="comment">// 公用</span></span><br><span class="line">    <span class="keyword">private</span> String userName;</span><br><span class="line">    <span class="keyword">private</span> String userHeadUrl;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">long</span>   receiverTime;</span><br><span class="line">    <span class="comment">// 文本</span></span><br><span class="line">    <span class="keyword">private</span> String content;</span><br><span class="line">    <span class="comment">// 图片</span></span><br><span class="line">    <span class="keyword">private</span> String imageUrl;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> itemType;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> spanSize;</span><br><span class="line">    </span><br></pre></td></tr></table></figure>
+<h4 id="新建Adapter"><a href="#新建Adapter" class="headerlink" title="新建Adapter"></a>新建Adapter</h4><p>ChatAdapter 继承自 BaseMultiItemQuickAdapter</p>
+<p>这里需传入items类和BaseViewHolder.</p>
+<p>BaseViewHolder 是viewHolder基类，封装了一些常用方法，提高开发效率.</p>
+<p>构造方法：<br>需 指定要展示哪些类型的布局</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ChatAdapter</span><span class="params">(Context context, List&lt;ChatMutiItems&gt; data)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>(data);</span><br><span class="line">    mContext = context;</span><br><span class="line">    <span class="comment">// 设定可能需要展示的ItemType</span></span><br><span class="line">    addItemType(ChatMutiItems.TEXT, R.layout.item_text_view);</span><br><span class="line">    addItemType(ChatMutiItems.TEXT_O, R.layout.item_text_view_o);</span><br><span class="line">    addItemType(ChatMutiItems.IMAGE, R.layout.item_img_view);</span><br><span class="line">    addItemType(ChatMutiItems.IMAGE_O, R.layout.item_img_view_o);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Adapter具体用法下面将详细描述.</p>
+<h4 id="RecyclerView绑定Adapter"><a href="#RecyclerView绑定Adapter" class="headerlink" title="RecyclerView绑定Adapter"></a>RecyclerView绑定Adapter</h4><ul>
+<li>设定布局方式<br>流式布局（默认垂直滚动）</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> GridLayoutManager manager = <span class="keyword">new</span> GridLayoutManager(<span class="keyword">this</span>, <span class="number">1</span>);</span><br><span class="line">recyclerView.setLayoutManager(manager);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>绑定Adapter</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">recyclerView.setAdapter(chatAdapter);</span><br></pre></td></tr></table></figure>
+<h4 id="Adapter"><a href="#Adapter" class="headerlink" title="Adapter"></a>Adapter</h4><h5 id="convert-方法"><a href="#convert-方法" class="headerlink" title="convert()方法"></a>convert()方法</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">convert</span><span class="params">(BaseViewHolder holder, ChatMutiItems item)</span> </span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>holder - 对应页面中的每个Item（相当于ListView中的ConvertView）<br>item   - 数据(相当于ListView中的data.get(i))</p>
+<p>较ListViewAdapter优势：</p>
+<ul>
+<li>无需烦心view复用问题</li>
+</ul>
+<h5 id="设置数据"><a href="#设置数据" class="headerlink" title="设置数据"></a>设置数据</h5><p>可直接调用BaseViewHolder 提供的方法进行设置.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">holder.setText(R.id.item_text_username,item.getUserName());</span><br></pre></td></tr></table></figure>
+<p>查看源码可知，BaseViewHolder帮我们做了转换与设置.</p>
+<p>BaseViewHolder没有提供的方法怎么办？</p>
+<p>通过holder.getView()方法绑定控件</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(ImageView) holder.getView(R.id.item_text_headurl)</span><br></pre></td></tr></table></figure>
+<h5 id="点击事件与回调处理"><a href="#点击事件与回调处理" class="headerlink" title="点击事件与回调处理"></a>点击事件与回调处理</h5><p>Adapter作为View层，负责展示数据，不应该在此处理点击事件或其他业务操作逻辑，将复杂的逻辑放置Controller层或Manager层.</p>
+<ul>
+<li><p>点击事件</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 添加点击事件</span></span><br><span class="line">  holder.addOnClickListener(R.id.item_text_content);</span><br><span class="line">&lt;!--￼<span class="number">3</span>--&gt;</span><br><span class="line"></span><br><span class="line">recyclerView.addOnItemTouchListener(<span class="keyword">new</span> OnItemClickListener() &#123;</span><br><span class="line">       <span class="meta">@Override</span></span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">SimpleOnItemClick</span><span class="params">(BaseQuickAdapter baseQuickAdapter, View view, <span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">           Log.d(<span class="string">"zliu"</span>,<span class="string">"SimpleOnItemClick - "</span> + view.getId());</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="meta">@Override</span></span><br><span class="line">       <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onItemChildClick</span><span class="params">(BaseQuickAdapter adapter, View view, <span class="keyword">int</span> position)</span> </span>&#123;</span><br><span class="line">           <span class="keyword">super</span>.onItemChildClick(adapter, view, position);</span><br><span class="line">           Log.d(<span class="string">"zliu"</span>,<span class="string">"onItemChildClick- id - "</span>+view.getId());</span><br><span class="line">       &#125;</span><br><span class="line">     &#125;);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>特殊回调</p>
+<p>  如文件下载进度，应通过局部刷新实现，在下载进度中刷新view.</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chatAdapter.notifyItemChanged(position);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="示例-高亮搜索"><a href="#示例-高亮搜索" class="headerlink" title="示例-高亮搜索"></a>示例-高亮搜索</h3><p>需求：模仿QQ搜索聊天记录<br>实现思路：</p>
+<ol>
+<li>高亮某关键字，即设置高亮色，通过SpannableStringBuilder完成</li>
+<li>子线程循坏数据，拿到设置SpannableStringBuilder后的数据</li>
+<li>更新页面</li>
+</ol>
+<p>部分代码：</p>
+<ol>
+<li><p>设置高亮字体</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> SpannableStringBuilder <span class="title">getStyle</span><span class="params">(<span class="keyword">int</span> color,String content, String key)</span> </span>&#123;</span><br><span class="line">    SpannableStringBuilder style = <span class="keyword">new</span> SpannableStringBuilder(content);</span><br><span class="line">    <span class="keyword">int</span> fstart = content.indexOf(key);</span><br><span class="line">    <span class="keyword">int</span> fend   = fstart+key.length();</span><br><span class="line">    style.setSpan(<span class="keyword">new</span> ForegroundColorSpan(color),fstart,fend, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);</span><br><span class="line">        <span class="keyword">return</span> style;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>循环后台返回的数据</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;SearchMsgEntity&gt; <span class="title">getSearchReuslt</span><span class="params">(String key)</span> </span>&#123;</span><br><span class="line">    List&lt;SearchMsgEntity&gt; results = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    List&lt;SearchMsgEntity&gt; source = getFakeData();</span><br><span class="line">    <span class="keyword">for</span> (SearchMsgEntity s : source) &#123;</span><br><span class="line">        <span class="keyword">if</span> (s.getName().contains(key)) &#123;</span><br><span class="line">            s.setNameStyle(getStyle(Color.BLUE,s.getName(),key));</span><br><span class="line">            results.add(s);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (s.getContent().contains(key)) &#123;</span><br><span class="line">            s.setContentStyle(getStyle(Color.BLUE,s.getContent(),key);                			  results.add(s);</span><br><span class="line">           &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> results;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>页面更新</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">search</span><span class="params">(View view)</span> </span>&#123;</span><br><span class="line">     <span class="keyword">if</span> (et_text.getText().toString().length() == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">     &#125;</span><br><span class="line">    <span class="comment">// 提示框</span></span><br><span class="line">    btn_search.setText(<span class="string">"获取中..."</span>);</span><br><span class="line">    Log.d(<span class="string">"zliu"</span>,<span class="string">"开始计算时间：- "</span>+System.currentTimeMillis());</span><br><span class="line">    Thread thread = <span class="keyword">new</span> Thread()&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="keyword">super</span>.run();</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="comment">// 模拟网络请求</span></span><br><span class="line">                Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                     e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">            List&lt;SearchMsgEntity&gt; results = dataManager.getSearchReuslt(et_text.getText().toString());</span><br><span class="line">            Message message = <span class="keyword">new</span> Message();</span><br><span class="line">            message.obj = results;</span><br><span class="line">            mHandler.sendMessage(message);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    thread.start();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> Handler mHandler = <span class="keyword">new</span> Handler()&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.handleMessage(msg);</span><br><span class="line">        btn_search.setText(<span class="string">"搜索"</span>);</span><br><span class="line">        adapter.setNewData((List&lt;SearchMsgEntity&gt;)msg.obj);</span><br><span class="line">        Log.d(<span class="string">"zliu"</span>,<span class="string">"设置完数据时间：- "</span>+System.currentTimeMillis());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>adapter 设置数据</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">convert</span><span class="params">(BaseViewHolder holder, SearchMsgEntity item)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">null</span> == item.getNameStyle()) &#123;</span><br><span class="line">        holder.setText(R.id.search_name,item.getName());</span><br><span class="line">    &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">        holder.setText(R.id.search_name,item.getNameStyle());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">null</span> == item.getContentStyle()) &#123;</span><br><span class="line">        holder.setText(R.id.search_content,item.getContent());</span><br><span class="line">     &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">        holder.setText(R.id.search_content,item.getContentStyle());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="示例-下拉刷新、加载更多"><a href="#示例-下拉刷新、加载更多" class="headerlink" title="示例-下拉刷新、加载更多"></a>示例-下拉刷新、加载更多</h3><p>由于BaseRecyclerViewAdapterHelper只提供了上拉加载更多(可自定义)，并且官方的下拉刷新自定义差，无法满足我们的需求，所以使用自定义的RecylcerView完成下拉刷新.</p>
+<ol>
+<li>自定义刷新布局</li>
+<li>activity加载刷新布局</li>
+<li>刷新逻辑控制</li>
+</ol>
+<p>代码很简单，参考PullRefreshLoadMoreActivity.</p>
+<p>项目地址：<a href="https://github.com/SandLZ/ChatUIDemo" target="_blank" rel="external">ChatUIDemo</a></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>Title:</span><a href="/2016/11/22/RecyclerView实战/">RecyclerView实战</a></p>
+        <p><span>Author:</span><a href="/" title="Back to Homepage">sand</a></p>
+        <p><span>Created:</span>2016-11-22, 22:45:11</p>
+        <p><span>Updated:</span>2017-03-25, 18:09:05</p>
+        <p>
+            <span>Full URL:</span><a class="post-url" href="/2016/11/22/RecyclerView实战/" title="RecyclerView实战">http://sandlz.me/2016/11/22/RecyclerView实战/</a>
+            <span class="copy-path" data-clipboard-text="From http://sandlz.me/2016/11/22/RecyclerView实战/　　By sand" title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>License:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"CC BY-NC-SA 4.0"</a> Keep Link &amp; Author if Distribute.
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2017/01/02/DBLite数据库/">
+                    DBLite数据库
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2016/10/21/Android优秀开源项目及学习资料汇总/">
+                    Android优秀开源项目及学习资料汇总
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么使用RecyclerView"><span class="toc-number">1.</span> <span class="toc-text">为什么使用RecyclerView?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么使用它？"><span class="toc-number">2.</span> <span class="toc-text">为什么使用它？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用"><span class="toc-number">3.</span> <span class="toc-text">使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#添加到工程"><span class="toc-number">3.1.</span> <span class="toc-text">添加到工程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#示例"><span class="toc-number">3.2.</span> <span class="toc-text">示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#示例-聊天页"><span class="toc-number">3.3.</span> <span class="toc-text">示例-聊天页</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#添加依赖"><span class="toc-number">3.3.1.</span> <span class="toc-text">添加依赖</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#新建items"><span class="toc-number">3.3.2.</span> <span class="toc-text">新建items</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#新建Adapter"><span class="toc-number">3.3.3.</span> <span class="toc-text">新建Adapter</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#RecyclerView绑定Adapter"><span class="toc-number">3.3.4.</span> <span class="toc-text">RecyclerView绑定Adapter</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Adapter"><span class="toc-number">3.3.5.</span> <span class="toc-text">Adapter</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#convert-方法"><span class="toc-number">3.3.5.1.</span> <span class="toc-text">convert()方法</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#设置数据"><span class="toc-number">3.3.5.2.</span> <span class="toc-text">设置数据</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#点击事件与回调处理"><span class="toc-number">3.3.5.3.</span> <span class="toc-text">点击事件与回调处理</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#示例-高亮搜索"><span class="toc-number">3.4.</span> <span class="toc-text">示例-高亮搜索</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#示例-下拉刷新、加载更多"><span class="toc-number">3.5.</span> <span class="toc-text">示例-下拉刷新、加载更多</span></a></li></ol></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="Hide"  title="Show or Hide Table of Contents">
+
+    <script>
+        yiliaConfig.toc = ["Hide", "Show", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"RecyclerView实战　| Blog　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+        <section class="youyan" id="comments">
+    <script>
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = 'http://v2.uyan.cc/code/uyan.js?uid=2105147';
+            (d.head || d.body).appendChild(s);
+        }
+    </script>
+    
+    <script> loadComment(); </script>
+
+    <div id="uyan_frame"></div>
+</section>
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2017/01/02/DBLite数据库/" title="Pre: DBLite数据库">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="Mini Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2016/10/21/Android优秀开源项目及学习资料汇总/" title="Next: Android优秀开源项目及学习资料汇总">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/03/27/Ionic多视图/">Ionic多视图</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/08/MySQL恢复数据/">MySQL恢复数据</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/02/DBLite数据库/">DBLite数据库</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/22/RecyclerView实战/">RecyclerView实战</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/21/Android优秀开源项目及学习资料汇总/">Android优秀开源项目及学习资料汇总</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/19/Cordova-Plugin开发汇总/">Cordova-Plugin开发汇总</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/28/MVP + RxJava + Retrofit + Dagger2 FrameWork/">MVP + RxJava + Retrofit + Dagger2 FrameWork</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/27/Android 开发基础/">Android 开发基础</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/18/RxJava学习笔记(一)-基础/">RxJava学习笔记(一) - 基础篇</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/17/Android之MVP/">Android之MVP</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/15/Git命令/">Git命令</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/28/WebApp开发常见问题汇总/">WebApp开发常见问题汇总</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/26/Android 开发常见问题汇总/">Android 开发常见问题汇总</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/25/IonicFramework之Hybrid App开发/">IonicFramework 之 Hybrid App开发</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/17/AngularJs-Chart/">AngularJs-Chart的使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/01/Linux常用命令/">Linux常用命令</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/12/香蕉派折腾记/">香蕉派折腾记</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/30/ios-创建Framework/">Ios-创建Framework</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/10/03/Hexo常用命令/">Hexo常用命令</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2015-2017 sand
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="A fast, simple &amp; powerful blog framework">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="Another simple and elegant theme for Hexo  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="Site Visitors"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="Page Hits"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 1;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="Back to Top"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="Comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="Go to Bottom"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="sand" />
+
+
+
+<meta name="description" content="香蕉派(BananaPi)是类似于树莓派一样的卡片式微型计算机，可用于硬件控制、软件部署、多媒体播放等等用途. 到手bananapi pro也有一段时间了，最近正好有空，记录一下我走过的坑…  安装准备 开始安装 连接网络 花生壳 迅雷离线 共享 开发环境 运行状态  安装准备进入官网下载页面,有13个系统供我们选择，如下图所示：">
+<meta name="keywords" content="香蕉派">
+<meta property="og:type" content="article">
+<meta property="og:title" content="香蕉派折腾记">
+<meta property="og:url" content="http://sandlz.me/2016/01/12/香蕉派折腾记/index.html">
+<meta property="og:site_name" content="Blog">
+<meta property="og:description" content="香蕉派(BananaPi)是类似于树莓派一样的卡片式微型计算机，可用于硬件控制、软件部署、多媒体播放等等用途. 到手bananapi pro也有一段时间了，最近正好有空，记录一下我走过的坑…  安装准备 开始安装 连接网络 花生壳 迅雷离线 共享 开发环境 运行状态  安装准备进入官网下载页面,有13个系统供我们选择，如下图所示：">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://7xsap2.com1.z0.glb.clouddn.com/pi_download_index.png">
+<meta property="og:image" content="http://7xsap2.com1.z0.glb.clouddn.com/oray_status.png">
+<meta property="og:image" content="http://7xsap2.com1.z0.glb.clouddn.com/net.jpeg">
+<meta property="og:image" content="http://7xsap2.com1.z0.glb.clouddn.com/%E8%BF%85%E9%9B%B7.png">
+<meta property="og:updated_time" content="2016-07-28T13:23:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="香蕉派折腾记">
+<meta name="twitter:description" content="香蕉派(BananaPi)是类似于树莓派一样的卡片式微型计算机，可用于硬件控制、软件部署、多媒体播放等等用途. 到手bananapi pro也有一段时间了，最近正好有空，记录一下我走过的坑…  安装准备 开始安装 连接网络 花生壳 迅雷离线 共享 开发环境 运行状态  安装准备进入官网下载页面,有13个系统供我们选择，如下图所示：">
+<meta name="twitter:image" content="http://7xsap2.com1.z0.glb.clouddn.com/pi_download_index.png">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="Blog" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>香蕉派折腾记 | Blog</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: false,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script>
+        yiliaConfig.jquery_ui = [true, "//cdn.bootcss.com/jqueryui/1.10.4/jquery-ui.min.js", "//cdn.bootcss.com/jqueryui/1.10.4/css/jquery-ui.min.css"];
+    </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">sand</a></h1>
+        </hgroup>
+
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="true" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>Menu</li>
+                        <li>Tags</li>
+                        
+                        <li>Friends</li>
+                        
+                        
+                        <li>About Me</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/music/">音乐</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:978949438@qq.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="https://github.com/SandLZ" title="GitHub"></a>
+                            
+                                <a class="fa 简书" href="http://www.jianshu.com/users/3034107bd129/timeline" title="简书"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android-Studio/">Android Studio</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AngularJs/">AngularJs</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Chart/">Chart</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cordova/">Cordova</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/DB/">DB</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Dagger2/">Dagger2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Error/">Error</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Exception/">Exception</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FrameWork/">FrameWork</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Gradle/">Gradle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/">Hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hybrid-App/">Hybrid App</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IM/">IM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ionic/">Ionic</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MVP/">MVP</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/MySQL/">MySQL</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ORM/">ORM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Plugin/">Plugin</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RecyclerView/">RecyclerView</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Retrofit/">Retrofit</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RxJava/">RxJava</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/WebApp/">WebApp</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/framework/">framework</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/framwork/">framwork</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ios/">ios</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ui-router/">ui-router</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/命令/">命令</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/学习资料/">学习资料</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/常见问题/">常见问题</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/开源项目汇总/">开源项目汇总</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/恢复/">恢复</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/技巧/">技巧</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/插件/">插件</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/设计模式/">设计模式</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/香蕉派/">香蕉派</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="/devlu007.me">devlu</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">专注移动开发</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">sand</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">sand</a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/music/">音乐</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:978949438@qq.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/SandLZ" title="GitHub"></a>
+                            
+                                <a class="fa 简书" target="_blank" href="http://www.jianshu.com/users/3034107bd129/timeline" title="简书"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
+</nav>
+      <div class="body-wrap"><article id="post-香蕉派折腾记" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/01/12/香蕉派折腾记/" class="article-date">
+      <time datetime="2016-01-12T01:40:48.000Z" itemprop="datePublished">2016-01-12</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      香蕉派折腾记
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/IT/">IT</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/香蕉派/">香蕉派</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p><a href="http://www.xiangjiaopro.com/" target="_blank" rel="external">香蕉派</a>(BananaPi)是类似于树莓派一样的卡片式微型计算机，可用于硬件控制、软件部署、多媒体播放等等用途.</p>
+<p>到手bananapi pro也有一段时间了，最近正好有空，记录一下我走过的坑…</p>
+<ul>
+<li>安装准备</li>
+<li>开始安装</li>
+<li>连接网络</li>
+<li>花生壳</li>
+<li>迅雷离线</li>
+<li>共享</li>
+<li>开发环境</li>
+<li>运行状态</li>
+</ul>
+<h2 id="安装准备"><a href="#安装准备" class="headerlink" title="安装准备"></a>安装准备</h2><p>进入官网<a href="http://www.xiangjiaopro.com/Helps/jxwjpro.html" target="_blank" rel="external">下载</a>页面,有13个系统供我们选择，如下图所示：<br><a id="more"></a></p>
+<div align="center"><br><img src="http://7xsap2.com1.z0.glb.clouddn.com/pi_download_index.png" width="350" height="303" alt="图片名称" align="center"><br></div>
+
+<p>目前我试过2个系统：Android、Raspbian<br>有开发需求的建议安装Raspbian</p>
+<ul>
+<li><p>Android </p>
+  <blockquote><p>版本:4.4，是一个Android pad版本，分辨率经过测试支持1080P(默认)<br>支持wifi连接(稳定性欠佳)<br>此系统最大好处就是可以像使用手机一样安装App,比如我安装了全聚合App(非广告)，通过HDMI连接到显示器，像其他盒子一样可以看网络电视、视屏等.</p>
+</blockquote>
+</li>
+<li><p>Raspbian</p>
+  <blockquote><p>基于Debian修改而来的Linux系统</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="开始安装"><a href="#开始安装" class="headerlink" title="开始安装"></a>开始安装</h2><h3 id="安装系统"><a href="#安装系统" class="headerlink" title="安装系统"></a>安装系统</h3><p>官方提供了详细的安装操作系统的说明，点我<a href="http://www.xiangjiaopro.com/Helps/quickguide.html" target="_blank" rel="external">查看</a></p>
+<h2 id="连接网络"><a href="#连接网络" class="headerlink" title="连接网络"></a>连接网络</h2><p>准备<br><blockquote><ul>
+<li>有显示器<br>  打开控制台，输入ifconfig查看网络状况<br>  查看eth0 与 wlan0信息</li>
+<li>无显示器<br>  计算机一台，通过远程的方式连接到香蕉派<br>  如：ssh bananapi@192.168.1.8</li>
+</ul>
+</blockquote></p>
+<h3 id="网线"><a href="#网线" class="headerlink" title="网线"></a>网线</h3><p>通过网线方式连接的话，控制台ifconfig,eth0信息中是否有ip地址（没有的话检查网线连接、路由器地址过滤或地址绑定是否限制）</p>
+<h3 id="Wifi"><a href="#Wifi" class="headerlink" title="Wifi"></a>Wifi</h3><p>如网线类似，查看wlan0信息（无waln0 ? 别急…这是一个坑,下面将具体介绍）</p>
+<h3 id="配置网络"><a href="#配置网络" class="headerlink" title="配置网络"></a>配置网络</h3><h4 id="大坑记录"><a href="#大坑记录" class="headerlink" title="大坑记录"></a>大坑记录</h4><p>香蕉派默认没有开启wifi模块，需要手动开启…</p>
+<p>开启方式(<a href="http://wiki.lemaker.org/BananaPro/Pi:WiFi_configuration" target="_blank" rel="external">官方文档</a>)：<br><blockquote><ul>
+<li>加载wifi驱动<br>  sudo modprobe ap6210</li>
+<li>查看所有驱动加载情况<br>  lsmod</li>
+</ul>
+<p>sudo modprobe ap6210 只是一次性的，重启后wifi并不会加载，所以我们要让他开机就加载wifi：</p>
+<ul>
+<li>编辑模块配置文件<br>  sudo nano /etc/modules</li>
+<li>在底部添加一行<br>  ap6210</li>
+<li>保存并退出</li>
+</ul>
+</blockquote></p>
+<h4 id="修改网络配置文件"><a href="#修改网络配置文件" class="headerlink" title="修改网络配置文件"></a>修改网络配置文件</h4><p>通过编辑配置文件的方式，选择Dhcp或Static ip<br>网络配置文件地址：/etc/network/interfaces</p>
+<ol>
+<li>控制台执行：sudo nano /etc/network/interfaces</li>
+<li><p>修改配置(静态ip方式，方便远程连接)</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"># eth0-有线</span><br><span class="line">auto lo</span><br><span class="line">iface lo inet loopback</span><br><span class="line">iface eth0 inet static</span><br><span class="line">address 192.168.0.13</span><br><span class="line">netmask 255.255.255.0</span><br><span class="line">gateway 192.168.0.1</span><br><span class="line"># wlan0-无线</span><br><span class="line">#auto wlan0</span><br><span class="line">#allow-hotplug wlan0</span><br><span class="line">#iface wlan0 inet static</span><br><span class="line">#pre-up wpa_supplicant -B w -D wext -i wlan0 -c/etc/	wpa.conf</span><br><span class="line">#post-down killall -q wpa_supplicant</span><br><span class="line">#address 192.168.0.12</span><br><span class="line">#netmask 255.255.255.0</span><br><span class="line">#gateway 192.168.0.1</span><br><span class="line"></span><br><span class="line">iface default inet dhcp</span><br></pre></td></tr></table></figure>
+<p> 这里我没有使用wifi,注释了wifi配置，采用eth0</p>
+</li>
+</ol>
+<h2 id="花生壳"><a href="#花生壳" class="headerlink" title="花生壳"></a>花生壳</h2><p>花生壳是一个针对嵌入式设备而开发的控制软件，可以花生壳后台配置访问内网的设备，包括端口映射配置.</p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><ul>
+<li>下载<a href="http://hsk.oray.com/download/#type=http|shumeipai" target="_blank" rel="external">安装包</a></li>
+<li>文件拷贝<br>通过u盘，或者ftp的方式将文件放置到香蕉派，解压缩<br>进入phddns2文件夹 cd phddns2<br>执行 ./oraynewph start</li>
+<li>查看状态<br>oraynewph status<br>查看控制台信息，即可看到SN码，以及运行状态.<br><div align="center"><br><img src="http://7xsap2.com1.z0.glb.clouddn.com/oray_status.png" width="598" height="140" alt="图片名称" align="center"><br></div><h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3></li>
+<li>登录<a href="b.oray.com">花生壳后台管理</a><br>  输入SN码，首次密码：admin<br>  完成手机邮箱验证</li>
+<li>绑定<br>  香蕉派需要绑定花生壳账号才能使用，所以还得注册一个花生壳账号以绑定香蕉派（如需使用内网穿透，须购买内网穿透）</li>
+<li>配置<br>绑定后，新增、修改内网映射，即可通过你的花生壳域名来访问你的香蕉派服务<div align="center"><br><img src="http://7xsap2.com1.z0.glb.clouddn.com/net.jpeg" width="600" height="290" alt="图片名称" align="center"><br></div>
+
+</li>
+</ul>
+<h2 id="迅雷离线"><a href="#迅雷离线" class="headerlink" title="迅雷离线"></a>迅雷离线</h2><p>为香蕉派增加离线下载功能</p>
+<h3 id="安装迅雷离线固件"><a href="#安装迅雷离线固件" class="headerlink" title="安装迅雷离线固件"></a>安装迅雷离线固件</h3><ul>
+<li>下载<br>  下载地址：<a href="http://pan.baidu.com/s/1kTCBZbL" target="_blank" rel="external">http://pan.baidu.com/s/1kTCBZbL</a> 提取码：qiq9</li>
+<li>上传<br>  拷贝安装文件到香蕉派中，如~/home/bananapi/xunlei</li>
+<li>解压缩<br>  unzip xxxx.zip</li>
+<li>权限<br>  chmod 0777 * -R</li>
+<li>运行<br>  ./portal<br>  获取到你的设备码</li>
+<li>重启<br>  ./portal -s<br>  ./portal</li>
+<li>迅雷远程<br>  <a href="http://yuancheng.xunlei.com/" target="_blank" rel="external">http://yuancheng.xunlei.com/</a><br>  输入之前的机器码<br>  <div align="center"><br><img src="http://7xsap2.com1.z0.glb.clouddn.com/%E8%BF%85%E9%9B%B7.png" width="550" height="270" alt="图片名称" align="center"><br></div><br>此时是无法下载的（没有挂在硬盘）</li>
+</ul>
+<h3 id="挂载硬盘"><a href="#挂载硬盘" class="headerlink" title="挂载硬盘"></a>挂载硬盘</h3><blockquote><p>迅雷是检测挂载的磁盘来作为下载的目录。所以要保证几个事情，一是迅雷要具有写入权限； 二是必须要有挂载的磁盘，而且这个磁盘必须不是挂载到根目录的</p>
+</blockquote>
+<h2 id="共享"><a href="#共享" class="headerlink" title="共享"></a>共享</h2><h3 id="Samba"><a href="#Samba" class="headerlink" title="Samba"></a>Samba</h3><blockquote><p>Samba是在Linux和UNIX系统上实现SMB协议的一个免费软件，由服务器及客户端程序构成。SMB（Server Messages Block，信息服务块）是一种在局域网上共享文件和打印机的一种通信协议，它为局域网内的不同计算机之间提供文件及打印机等资源的共享服务。</p>
+</blockquote>
+<ul>
+<li>安装samba包</li>
+</ul>
+<p>sudo apt-get install samba samba-common-bin<br>sudo apt-get install netatalk （可选，用于支持AFP）<br>sudo apt-get install avahi-daemon（可选，用于支持网内的计算机自动发现）</p>
+<ul>
+<li>配置</li>
+</ul>
+<p>/etc/samba/smb.conf </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[public]</span><br><span class="line">comment = Public Storage</span><br><span class="line">path = /home/pi</span><br><span class="line">read only = no#任何人都具有了访问修改的权限</span><br><span class="line">#因为是公共文件夹，所以给了所有用户全部权限，可以自定义</span><br><span class="line">create mask = 0777#新创建文件的默认属性</span><br><span class="line">directory mask = 0777#新创建文件夹的默认属性</span><br><span class="line">guest ok = yes#默认的访问用户名为guest</span><br><span class="line">browseable = yes</span><br></pre></td></tr></table></figure>
+<ul>
+<li>用户</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/passwd | mksmbpasswd.sh &gt;/etc/samba/smbpasswd</span><br><span class="line">smbpasswd -a 用户名 添加用户</span><br><span class="line">smbpasswd -e 用户名 激活用户</span><br></pre></td></tr></table></figure>
+<h3 id="DLNA"><a href="#DLNA" class="headerlink" title="DLNA"></a>DLNA</h3><blockquote><p>DLNA并不是创造技术，而是形成一种解决的方案，一种大家可以遵守的规范。所以，其选择的各种技术和协议都是当前所应用很广泛的技术和协议。<br>DLNA将其整个应用规定成5个功能组件。从下到上依次为：网络互连，网络协议，媒体传输，设备的发现控制和管理，媒体格式。</p>
+</blockquote>
+<ul>
+<li>安装<pre><code>sudo apt-get install minidlna
+</code></pre></li>
+<li>配置<pre><code>/etc/minidlna.conf
+</code></pre></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#A表示这个目录是存放音乐的，当minidlna读到配置文件时，它会自动加载这个目录下的音乐文件</span><br><span class="line">media_dir=A,/samba/DLNA/Music</span><br><span class="line">media_dir=P,/samba/DLNA/Picture</span><br><span class="line">media_dir=V,/samba/DLNA/Video</span><br><span class="line">#配置minidlna的数库数据的存放目录</span><br><span class="line">db_dir=/samba/DLNA/db</span><br><span class="line">#配置日志目录</span><br><span class="line">log_dir=/samba/DLNA/log</span><br></pre></td></tr></table></figure>
+<p>确保目录存在且设置权限为可读写</p>
+<ul>
+<li><p>其他</p>
+<ul>
+<li>重启 minidlna<br>  /etc/init.d/minidlna restart</li>
+<li>minidlna 随机启动<br> sudo update-rc.d minidlna defaults</li>
+<li>停止 minidlna 服务<br>  sudo service minidlna stop</li>
+<li>取消 minidlna 的开机自动启动<br>  sudo update-rc.d -f minidlna remove</li>
+</ul>
+</li>
+<li><p>minidlna支持rm、rmvb<br>  参考:<a href="http://blog.csdn.net/haven200/article/details/43039261" target="_blank" rel="external">编译minidlna</a></p>
+</li>
+</ul>
+<h3 id="FTP"><a href="#FTP" class="headerlink" title="FTP"></a>FTP</h3><ul>
+<li>安装<br>  apt-get install vsftpd</li>
+<li>配置<br>  /etc/vsftpd.conf<ul>
+<li>配置用户可以写权限：write_enable=YES</li>
+<li>配置uMask：local_umask=022（默认为077，该种方式不支持断点续传，修改为022）</li>
+<li>禁止匿名用户登录：anonymous_enable=NO</li>
+<li>限制用户访问配置以外的路径：chroot_local_user=YES（这个配置是限制全部用户的，也可以限制部分用户）</li>
+<li>配置用户的Home目录：local_root=/application/search/test</li>
+</ul>
+</li>
+<li>重启<br>  service vsftpd restart</li>
+</ul>
+<h2 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h2><h2 id="运行状态"><a href="#运行状态" class="headerlink" title="运行状态"></a>运行状态</h2><p>获取香蕉派的cpu、内存等使用情况</p>
+<ul>
+<li>建立脚本<br>  nano get.py</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line">import os</span><br><span class="line"> </span><br><span class="line"># Return CPU temperature as a character string                                     </span><br><span class="line">def getCPUtemperature():</span><br><span class="line">    res = os.popen(&apos;vcgencmd measure_temp&apos;).readline()</span><br><span class="line">    return(res.replace(&quot;temp=&quot;,&quot;&quot;).replace(&quot;&apos;C\n&quot;,&quot;&quot;))</span><br><span class="line"> </span><br><span class="line"># Return RAM information (unit=kb) in a list                                      </span><br><span class="line"># Index 0: total RAM                                                              </span><br><span class="line"># Index 1: used RAM                                                                </span><br><span class="line"># Index 2: free RAM                                                                </span><br><span class="line">def getRAMinfo():</span><br><span class="line">    p = os.popen(&apos;free&apos;)</span><br><span class="line">    i = 0</span><br><span class="line">    while 1:</span><br><span class="line">        i = i + 1</span><br><span class="line">        line = p.readline()</span><br><span class="line">        if i==2:</span><br><span class="line">            return(line.split()[1:4])</span><br><span class="line"> </span><br><span class="line"># Return % of CPU used by user as a character string                               </span><br><span class="line">def getCPUuse():</span><br><span class="line">    return(str(os.popen(&quot;top -n1 | awk &apos;/Cpu\(s\):/ &#123;print $2&#125;&apos;&quot;).readline().strip()))</span><br><span class="line"> </span><br><span class="line"># Return information about disk space as a list (unit included)                    </span><br><span class="line"># Index 0: total disk space                                                        </span><br><span class="line"># Index 1: used disk space                                                        </span><br><span class="line"># Index 2: remaining disk space                                                    </span><br><span class="line"># Index 3: percentage of disk used                                                 </span><br><span class="line">def getDiskSpace():</span><br><span class="line">    p = os.popen(&quot;df -h /&quot;)</span><br><span class="line">    i = 0</span><br><span class="line">    while 1:</span><br><span class="line">        i = i +1</span><br><span class="line">        line = p.readline()</span><br><span class="line">        if i==2:</span><br><span class="line">            return(line.split()[1:5])</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"># CPU informatiom</span><br><span class="line">CPU_temp = getCPUtemperature()</span><br><span class="line">CPU_usage = getCPUuse()</span><br><span class="line"> </span><br><span class="line"># RAM information</span><br><span class="line"># Output is in kb, here I convert it in Mb for readability</span><br><span class="line">RAM_stats = getRAMinfo()</span><br><span class="line">RAM_total = round(int(RAM_stats[0]) / 1000,1)</span><br><span class="line">RAM_used = round(int(RAM_stats[1]) / 1000,1)</span><br><span class="line">RAM_free = round(int(RAM_stats[2]) / 1000,1)</span><br><span class="line"> </span><br><span class="line"># Disk information</span><br><span class="line">DISK_stats = getDiskSpace()</span><br><span class="line">DISK_total = DISK_stats[0]</span><br><span class="line">DISK_used = DISK_stats[1]</span><br><span class="line">DISK_perc = DISK_stats[3]</span><br><span class="line"> </span><br><span class="line">if __name__ == &apos;__main__&apos;:</span><br><span class="line">    print(&apos;&apos;)</span><br><span class="line">    print(&apos;CPU Temperature = &apos;+CPU_temp)</span><br><span class="line">    print(&apos;CPU Use = &apos;+CPU_usage)</span><br><span class="line">    print(&apos;&apos;)</span><br><span class="line">    print(&apos;RAM Total = &apos;+str(RAM_total)+&apos; MB&apos;)</span><br><span class="line">    print(&apos;RAM Used = &apos;+str(RAM_used)+&apos; MB&apos;)</span><br><span class="line">    print(&apos;RAM Free = &apos;+str(RAM_free)+&apos; MB&apos;)</span><br><span class="line">    print(&apos;&apos;) </span><br><span class="line">    print(&apos;DISK Total Space = &apos;+str(DISK_total)+&apos;B&apos;)</span><br><span class="line">    print(&apos;DISK Used Space = &apos;+str(DISK_used)+&apos;B&apos;)</span><br><span class="line">    print(&apos;DISK Used Percentage = &apos;+str(DISK_perc))</span><br></pre></td></tr></table></figure>
+<ul>
+<li>执行脚本<br>  python get.py</li>
+</ul>
+<p>参考：</p>
+<ol>
+<li><a href="http://jianfeihit.iteye.com/blog/1820413" target="_blank" rel="external">FTP</a></li>
+<li><a href="http://shumeipai.nxez.com/2013/08/24/install-nas-on-raspberrypi.html" target="_blank" rel="external">SAMBA</a></li>
+<li><a href="http://shumeipai.nxez.com/2015/07/12/raspberry-pi-install-dlna-streaming-media-server.html?variant=zh-cn" target="_blank" rel="external">MINIDLNA</a></li>
+</ol>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>Title:</span><a href="/2016/01/12/香蕉派折腾记/">香蕉派折腾记</a></p>
+        <p><span>Author:</span><a href="/" title="Back to Homepage">sand</a></p>
+        <p><span>Created:</span>2016-01-12, 09:40:48</p>
+        <p><span>Updated:</span>2016-07-28, 21:23:23</p>
+        <p>
+            <span>Full URL:</span><a class="post-url" href="/2016/01/12/香蕉派折腾记/" title="香蕉派折腾记">http://sandlz.me/2016/01/12/香蕉派折腾记/</a>
+            <span class="copy-path" data-clipboard-text="From http://sandlz.me/2016/01/12/香蕉派折腾记/　　By sand" title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>License:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"CC BY-NC-SA 4.0"</a> Keep Link &amp; Author if Distribute.
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2016/07/01/Linux常用命令/">
+                    Linux常用命令
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2015/11/30/ios-创建Framework/">
+                    Ios-创建Framework
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">Contents</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#安装准备"><span class="toc-number">1.</span> <span class="toc-text">安装准备</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开始安装"><span class="toc-number">2.</span> <span class="toc-text">开始安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装系统"><span class="toc-number">2.1.</span> <span class="toc-text">安装系统</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#连接网络"><span class="toc-number">3.</span> <span class="toc-text">连接网络</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#网线"><span class="toc-number">3.1.</span> <span class="toc-text">网线</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Wifi"><span class="toc-number">3.2.</span> <span class="toc-text">Wifi</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置网络"><span class="toc-number">3.3.</span> <span class="toc-text">配置网络</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#大坑记录"><span class="toc-number">3.3.1.</span> <span class="toc-text">大坑记录</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#修改网络配置文件"><span class="toc-number">3.3.2.</span> <span class="toc-text">修改网络配置文件</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#花生壳"><span class="toc-number">4.</span> <span class="toc-text">花生壳</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装"><span class="toc-number">4.1.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#配置"><span class="toc-number">4.2.</span> <span class="toc-text">配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#迅雷离线"><span class="toc-number">5.</span> <span class="toc-text">迅雷离线</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装迅雷离线固件"><span class="toc-number">5.1.</span> <span class="toc-text">安装迅雷离线固件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#挂载硬盘"><span class="toc-number">5.2.</span> <span class="toc-text">挂载硬盘</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#共享"><span class="toc-number">6.</span> <span class="toc-text">共享</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Samba"><span class="toc-number">6.1.</span> <span class="toc-text">Samba</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DLNA"><span class="toc-number">6.2.</span> <span class="toc-text">DLNA</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#FTP"><span class="toc-number">6.3.</span> <span class="toc-text">FTP</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开发环境"><span class="toc-number">7.</span> <span class="toc-text">开发环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#运行状态"><span class="toc-number">8.</span> <span class="toc-text">运行状态</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="Hide"  title="Show or Hide Table of Contents">
+
+    <script>
+        yiliaConfig.toc = ["Hide", "Show", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"香蕉派折腾记　| Blog　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+        <section class="youyan" id="comments">
+    <script>
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = 'http://v2.uyan.cc/code/uyan.js?uid=2105147';
+            (d.head || d.body).appendChild(s);
+        }
+    </script>
+    
+    <script> loadComment(); </script>
+
+    <div id="uyan_frame"></div>
+</section>
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2016/07/01/Linux常用命令/" title="Pre: Linux常用命令">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="Mini Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2015/11/30/ios-创建Framework/" title="Next: Ios-创建Framework">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/03/27/Ionic多视图/">Ionic多视图</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/08/MySQL恢复数据/">MySQL恢复数据</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/02/DBLite数据库/">DBLite数据库</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/11/22/RecyclerView实战/">RecyclerView实战</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/21/Android优秀开源项目及学习资料汇总/">Android优秀开源项目及学习资料汇总</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/10/19/Cordova-Plugin开发汇总/">Cordova-Plugin开发汇总</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/28/MVP + RxJava + Retrofit + Dagger2 FrameWork/">MVP + RxJava + Retrofit + Dagger2 FrameWork</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/09/27/Android 开发基础/">Android 开发基础</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/18/RxJava学习笔记(一)-基础/">RxJava学习笔记(一) - 基础篇</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/17/Android之MVP/">Android之MVP</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/08/15/Git命令/">Git命令</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/28/WebApp开发常见问题汇总/">WebApp开发常见问题汇总</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/26/Android 开发常见问题汇总/">Android 开发常见问题汇总</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/25/IonicFramework之Hybrid App开发/">IonicFramework 之 Hybrid App开发</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/17/AngularJs-Chart/">AngularJs-Chart的使用</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/07/01/Linux常用命令/">Linux常用命令</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/12/香蕉派折腾记/">香蕉派折腾记</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/11/30/ios-创建Framework/">Ios-创建Framework</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/10/03/Hexo常用命令/">Hexo常用命令</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2015-2017 sand
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="A fast, simple &amp; powerful blog framework">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="Another simple and elegant theme for Hexo  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="Site Visitors"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="Page Hits"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 1;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="Back to Top"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="Comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="Go to Bottom"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
