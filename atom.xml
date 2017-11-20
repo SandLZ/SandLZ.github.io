@@ -172,11 +172,11 @@
     
       <category term="Cordova" scheme="http://sandlz.me/tags/Cordova/"/>
     
-      <category term="WebApp" scheme="http://sandlz.me/tags/WebApp/"/>
-    
       <category term="Plugin" scheme="http://sandlz.me/tags/Plugin/"/>
     
       <category term="Ionic" scheme="http://sandlz.me/tags/Ionic/"/>
+    
+      <category term="WebApp" scheme="http://sandlz.me/tags/WebApp/"/>
     
       <category term="插件" scheme="http://sandlz.me/tags/%E6%8F%92%E4%BB%B6/"/>
     
@@ -357,9 +357,9 @@
     
       <category term="Cordova" scheme="http://sandlz.me/tags/Cordova/"/>
     
-      <category term="WebApp" scheme="http://sandlz.me/tags/WebApp/"/>
-    
       <category term="Ionic" scheme="http://sandlz.me/tags/Ionic/"/>
+    
+      <category term="WebApp" scheme="http://sandlz.me/tags/WebApp/"/>
     
       <category term="常见问题" scheme="http://sandlz.me/tags/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/"/>
     
@@ -462,13 +462,13 @@
       <category term="IT" scheme="http://sandlz.me/categories/IT/"/>
     
     
-      <category term="AngularJs" scheme="http://sandlz.me/tags/AngularJs/"/>
-    
       <category term="Cordova" scheme="http://sandlz.me/tags/Cordova/"/>
     
-      <category term="Chart" scheme="http://sandlz.me/tags/Chart/"/>
-    
       <category term="WebApp" scheme="http://sandlz.me/tags/WebApp/"/>
+    
+      <category term="AngularJs" scheme="http://sandlz.me/tags/AngularJs/"/>
+    
+      <category term="Chart" scheme="http://sandlz.me/tags/Chart/"/>
     
   </entry>
   

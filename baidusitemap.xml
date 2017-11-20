@@ -247,11 +247,11 @@
         
         <tag>Cordova</tag>
          
-        <tag>WebApp</tag>
-         
         <tag>Plugin</tag>
          
         <tag>Ionic</tag>
+         
+        <tag>WebApp</tag>
          
         <tag>插件</tag>
          
@@ -275,9 +275,9 @@
         
         <tag>Cordova</tag>
          
-        <tag>WebApp</tag>
-         
         <tag>Ionic</tag>
+         
+        <tag>WebApp</tag>
          
         <tag>常见问题</tag>
          
@@ -348,13 +348,13 @@
         <title>AngularJs-Chart的使用</title>
         <pubTime>2016-07-17T13:57:02.000Z</pubTime>
         
-        <tag>AngularJs</tag>
-         
         <tag>Cordova</tag>
          
-        <tag>Chart</tag>
-         
         <tag>WebApp</tag>
+         
+        <tag>AngularJs</tag>
+         
+        <tag>Chart</tag>
          
          
            
