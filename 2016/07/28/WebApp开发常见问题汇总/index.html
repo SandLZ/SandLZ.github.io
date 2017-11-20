@@ -16,7 +16,7 @@
 
 
 <meta name="description" content="缓存问题描述：首先是页面构成目前有3个页面：首页（A）、统计信息（B）、详情（C）B页面有B1、B2两个tab页组成;C页面即详情页面（B跳转）问题：A-&amp;gt;B-&amp;gt;C 当由C返回B时，我们希望保留B的状态，于是设置了B页面的缓存为true(cache: true);此时，问题来了…继续返回到A时，再次进入B，还是保留在B的原状态.原因就是设置了缓存…而我们想要的是每次进入B，都是最新的数">
-<meta name="keywords" content="Cordova,Ionic,WebApp,常见问题">
+<meta name="keywords" content="Cordova,WebApp,Ionic,常见问题">
 <meta property="og:type" content="article">
 <meta property="og:title" content="WebApp开发常见问题汇总">
 <meta property="og:url" content="http://sandlz.me/2016/07/28/WebApp开发常见问题汇总/index.html">
